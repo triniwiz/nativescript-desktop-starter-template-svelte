@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "lib": ["esnext", "WebWorker"],
+    "verbatimModuleSyntax": true,
+    "sourceMap": true,
+    "noEmitHelpers": true,
+    "importHelpers": true,
+    "paths": {
+      "~/*": ["./src/*"],
+      "@/*": ["./src/*"],
+      "svelte-native": ["./node_modules/@nativescript-community/svelte-native"],
+      "svelte-native/*": ["./node_modules/@nativescript-community/svelte-native/*"]
+    },
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "skipLibCheck": true
+  },
+  "include": ["src", "types"],
+  "exclude": ["node_modules", "platforms"]
+}
