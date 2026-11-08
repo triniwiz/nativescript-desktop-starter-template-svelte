@@ -1,6 +1,6 @@
 # NativeScript Desktop Starter (Svelte)
 
-A Svelte starter that runs on Windows, iOS and Android. Layout uses
+A Svelte starter that runs on Windows, Linux, iOS and Android. Layout uses
 [MasonKit](https://github.com/triniwiz/nativescript-mason) (Flexbox, CSS Grid
 and HTML-style elements), and styling uses Tailwind CSS v4. Svelte renders
 through [Svelte Native](https://github.com/nativescript-community/svelte-native),
@@ -13,7 +13,7 @@ This is the Svelte version of
 
 ## Prerequisites
 
-> NativeScript for Windows is in alpha. Expect rough edges.
+> NativeScript for Windows and Linux is in alpha. Expect rough edges.
 
 To run on Windows you need the following. `npx ns doctor windows` checks them.
 
@@ -23,6 +23,14 @@ To run on Windows you need the following. `npx ns doctor windows` checks them.
 | [Node.js](https://nodejs.org) LTS | Provides `npm` and `npx`. |
 | [.NET 10 SDK](https://dotnet.microsoft.com/download) | The build runs `dotnet build`. Check it with `dotnet --version`. |
 | Developer Mode | Settings → Privacy & security → For developers. Windows needs it to install and launch the unsigned debug build. |
+
+To run on Linux you need the following.
+
+| Requirement | Notes |
+| --- | --- |
+| x64 Linux with glibc 2.34 or later | The runtime ships x64 binaries only. Ubuntu 22.04, Debian 12, Fedora 35 and later qualify. |
+| GTK 4 | The app's UI is GTK 4: `libgtk-4-1` on Debian and Ubuntu, `gtk4` on Fedora and Arch. |
+| [Node.js](https://nodejs.org) LTS | Provides `npm` and `npx`. |
 
 For iOS and Android, follow the [NativeScript environment setup](https://docs.nativescript.org/setup/).
 
@@ -34,21 +42,24 @@ You don't need to install the NativeScript CLI globally. It's a dev dependency, 
 git clone https://github.com/triniwiz/nativescript-desktop-starter-template-svelte my-app
 cd my-app
 npm install
-npm run windows   # or: npm run ios / npm run android
+npm run windows   # or: npm run linux / npm run ios / npm run android
 ```
 
-`npm run windows` builds the app, installs and launches it, then rebuilds and
+`npm run windows` (or `npm run linux`) builds the app, installs and launches it, then rebuilds and
 restarts it as you save. `npm run clean` removes the build output, and
 `npm run typecheck` runs `svelte-check`.
 
 Use npm. `package.json` relies on npm `overrides`.
+
+On macOS and Windows, run `npm install --force`. `@nativescript/linux` only
+declares support for Linux, so a plain `npm install` stops with `EBADPLATFORM`.
 
 ## Project layout
 
 | Path | What it's for |
 | --- | --- |
 | `src/app.ts` | App entry. Turns on `View.preflight`, registers MasonKit's elements and starts Svelte Native with the home screen. |
-| `src/app.css` | Tailwind, plus the `dark:`, `ios:`, `android:`, `windows:`, `phone:` and `tablet:` variants. |
+| `src/app.css` | Tailwind, plus the `dark:`, `ios:`, `android:`, `windows:`, `linux:`, `phone:` and `tablet:` variants. |
 | `src/components/Home.svelte` | The home screen. |
 | `src/components/Playground.svelte` | Flexbox and Grid examples. |
 | `svelte.config.mjs` | Svelte compiler options, used by the build and by `svelte-check`. |
@@ -96,7 +107,7 @@ Use npm. `package.json` relies on npm `overrides`.
 
 - **Something's missing from your setup:** `npx ns doctor windows` lists what it can't find and how to fix it.
 - **The app builds but won't launch** ("deployment failed"): turn on Developer Mode.
-- **A stale or broken build:** run `npm run clean`, then `npm run windows` again.
+- **A stale or broken build:** run `npm run clean`, then `npm run windows` (or `npm run linux`) again.
 
 ## Known issues
 
@@ -110,10 +121,12 @@ Use npm. `package.json` relies on npm `overrides`.
 These can be removed once the fixes are released:
 
 - `@nativescript/core` and `@nativescript/vite` are installed through pkg.pr.new from
-  [NativeScript/NativeScript#11468](https://github.com/NativeScript/NativeScript/pull/11468),
-  which is the `feat/windows` branch plus percentage sizes inside MasonKit layouts.
+  [NativeScript/NativeScript#11620](https://github.com/NativeScript/NativeScript/pull/11620),
+  which is the `feat/linux` branch. It builds on `feat/windows`, which includes
+  percentage sizes inside MasonKit layouts.
 - `@nativescript/windows` is pinned to an exact alpha, because a caret range
   would also match older, incompatible betas.
+- `@nativescript/linux` is pinned to an exact alpha.
 - `svelte-plugin.mjs` stands in for `@sveltejs/vite-plugin-svelte`, whose
   Svelte 4 versions only support Vite 5, while `@nativescript/vite` needs
   Vite 8. It strips TypeScript and compiles. It also collapses whitespace in
