@@ -1,15 +1,12 @@
 import { defineConfig, mergeConfig } from 'vite';
 import { baseConfig } from '@nativescript/vite/base';
 import { protect, restore } from './postcss-masonkit.mjs';
-import { masonkitSingleInstance } from './masonkit-hmr.mjs';
-import { escapedSelectorCommas } from './postcss-selector-commas.mjs';
-import { stableActivityChunk } from './android-workarounds.mjs';
 import { nativescriptSvelte } from './svelte-plugin.mjs';
 import svelteConfig from './svelte.config.mjs';
 
 export default defineConfig(({ mode }) =>
   mergeConfig(baseConfig({ mode, flavor: 'svelte' }), {
-    plugins: [nativescriptSvelte(svelteConfig), masonkitSingleInstance(), stableActivityChunk()],
+    plugins: [nativescriptSvelte(svelteConfig)],
     resolve: {
       // MasonKit's Svelte integration imports `svelte-native`, the package's
       // old name. Both names must load the same module, or MasonKit registers
@@ -34,9 +31,8 @@ export default defineConfig(({ mode }) =>
     css: {
       postcss: {
         // Lets Tailwind layout utilities (flex, grid, gap, max-w, ...) reach
-        // MasonKit views instead of being stripped for core layouts, and keeps
-        // classes with commas in them, like `grid-cols-[repeat(...,...)]`.
-        plugins: [protect(), restore(), escapedSelectorCommas()],
+        // MasonKit views instead of being stripped for core layouts.
+        plugins: [protect(), restore()],
       },
     },
   }),

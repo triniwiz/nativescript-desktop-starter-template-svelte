@@ -65,7 +65,6 @@ declares support for Linux, so a plain `npm install` stops with `EBADPLATFORM`.
 | `svelte.config.mjs` | Svelte compiler options, used by the build and by `svelte-check`. |
 | `svelte-plugin.mjs` | Compiles `.svelte` files for the Vite build (see [Temporary workarounds](#temporary-workarounds)). |
 | `postcss-masonkit.mjs` | Keeps the Tailwind layout utilities (`flex`, `grid`, `gap-*`, `max-w-*`, `absolute`, ...) that NativeScript's Tailwind plugin would otherwise remove. |
-| `android-workarounds.mjs` | Keeps Android rebuilds from loading a stale activity chunk (see [Temporary workarounds](#temporary-workarounds)). |
 
 ## Tips
 
@@ -136,14 +135,5 @@ These can be removed once the fixes are released:
 - `vite.config.mts` aliases `svelte-native` to
   `@nativescript-community/svelte-native`. MasonKit's Svelte integration
   imports the old package name, and both names must load the same copy.
-- `android-workarounds.mjs` names core's Android activity chunk without a
-  hash. The generated Java activity loads it by the name it had at the last
-  native build, so after a rebuild that renamed it, Android started the old
-  chunk and crashed ("isEmbedded is not a function").
 - `postcss-masonkit.mjs` also keeps `touch-action` and `:hover` rules, which
   `@nativescript/tailwind` strips even though MasonKit supports them.
-- `masonkit-hmr.mjs` stops MasonKit from loading twice during HMR. It only
-  runs on the dev server, so it does nothing until HMR is back on.
-- `postcss-selector-commas.mjs` makes classes with a comma, like
-  `grid-cols-[repeat(auto-fill,minmax(240,1fr))]`, match
-  ([NativeScript/NativeScript#11463](https://github.com/NativeScript/NativeScript/pull/11463)).
